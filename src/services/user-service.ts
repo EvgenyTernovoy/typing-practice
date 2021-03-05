@@ -57,7 +57,7 @@ export default class UserService {
           return [Operation.UPDATE_TO_CLIENT]
         case this.userIsClient(user):
           return [Operation.UPDATE_TO_MODERATOR]
-        case user instanceof Admin:
+        case this.userIsAdmin(user):
           return []
       }
     }
