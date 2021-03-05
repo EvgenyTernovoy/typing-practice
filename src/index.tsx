@@ -3,6 +3,7 @@ import "antd/dist/antd.css";
 import React from "react";
 import Login from "./pages/login";
 import NotFound from "./pages/not-found";
+import Forbidden from "./pages/not-available";
 import ReactDOM from "react-dom";
 import Dashboard from "./pages/dashboard";
 import { Router } from "@reach/router";
@@ -14,6 +15,7 @@ ReactDOM.render(
       <Router>
         <Dashboard path="/" />
         <Login path="/login" />
+        <Forbidden path="/notAvailable" />
         <NotFound default />
       </Router>
     </LogedInProvider>
