@@ -6,7 +6,7 @@ import type {User} from "../entities/user";
 import {Role} from "../entities/role";
 
 export type Credentials = {
-  email: string;
+  email: `${string}@${string}.${string}`;
   password: string;
 };
 
