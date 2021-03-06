@@ -2,11 +2,11 @@ import useOperations from "../../hooks/use-operations";
 import { Operation } from "../../entities/operation";
 import { Dropdown, Menu } from "antd";
 import { UserOutlined, DownOutlined } from "@ant-design/icons";
-import type {CurrentUser, User } from "../../entities/user";
+import type { User } from "../../entities/user";
 
 type ActionsProps = {
   user: User;
-  currentUser: CurrentUser;
+  currentUser: User | null;
   onAction: (action: Operation) => void;
 };
 

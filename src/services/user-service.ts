@@ -3,8 +3,10 @@ import {Admin} from "../entities/admin";
 import {Client} from "../entities/client";
 import {Moderator} from "../entities/moderator";
 import {Operation} from "../entities/operation";
-import type {CurrentUser, User} from "../entities/user";
+import type {User} from "../entities/user";
 import type {RoleToUser} from "../entities/role-to-user";
+import {AVAILABLE_USER_OPERATIONS} from "../entities/available-user-operations";
+import type {AVAILABLE_USER_OPERATIONS_TYPE} from '../entities/available-user-operations-type'
 
 export default class UserService {
   private users: readonly User[] = [];
@@ -34,64 +36,17 @@ export default class UserService {
     return this.users;
   }
 
-  getAvailableOperations(user: User, currentUser: CurrentUser):  Operation[] {
+  getAvailableOperations(user: User, currentUser: User | null):  readonly Operation[] {
     // Вам нужно поменять логику внутри getAvailableOperations для того, что бы это работало с логином
     if (!currentUser) {
       return []
     }
 
-    if(this.userIsAdmin(currentUser)) {
-      switch (true) {
-        case this.userIsModerator(user):
-          return [Operation.UPDATE_TO_CLIENT, Operation.UPDATE_TO_ADMIN]
-        case this.userIsClient(user):
-          return [Operation.UPDATE_TO_MODERATOR]
-        case this.userIsAdmin(user):
-          return [Operation.UPDATE_TO_MODERATOR]
-      }
-    }
-
-    if(this.userIsModerator(currentUser)) {
-      switch (true) {
-        case this.userIsModerator(user):
-          return [Operation.UPDATE_TO_CLIENT]
-        case this.userIsClient(user):
-          return [Operation.UPDATE_TO_MODERATOR]
-        case this.userIsAdmin(user):
-          return []
-      }
-    }
-
-    if(this.userIsClient(currentUser)) {
-      switch (true) {
-        case this.userIsModerator(user):
-          return []
-        case this.userIsClient(user):
-          return []
-        case this.userIsAdmin(user):
-          return []
-      }
-    }
-
-    return []
+    return this.getAvailableOperationsByUserRole(user.role, currentUser.role)
   }
 
-  userIsAdmin(
-    user: User
-  ): user is Admin {
-    return user instanceof Admin;
-  }
-
-  userIsModerator(
-    user: User
-  ): user is Moderator {
-    return user instanceof Moderator;
-  }
-
-  userIsClient(
-    user: User
-  ): user is Client {
-    return user instanceof Client;
+  getAvailableOperationsByUserRole<R extends Role, CR extends Role>(userRole: R, currentUserRole: CR): AVAILABLE_USER_OPERATIONS_TYPE[CR][R] {
+    return AVAILABLE_USER_OPERATIONS[currentUserRole][userRole]
   }
 
   getConstructorByRole(role: Role) {
