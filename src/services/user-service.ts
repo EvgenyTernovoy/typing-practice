@@ -7,6 +7,8 @@ import type {User} from "../entities/user";
 import type {RoleToUser} from "../entities/role-to-user";
 import {AVAILABLE_USER_OPERATIONS} from "../entities/available-user-operations";
 import type {AVAILABLE_USER_OPERATIONS_TYPE} from '../entities/available-user-operations-type'
+import or from "../utils/or";
+import {UserForOperation} from "../utils/user-for-operation";
 
 export default class UserService {
   private users: readonly User[] = [];
@@ -36,17 +38,61 @@ export default class UserService {
     return this.users;
   }
 
-  getAvailableOperations(user: User, currentUser: User | null):  readonly Operation[] {
+  getAvailableOperations(user: User, currentUser: User | null): readonly Operation[] {
     // Вам нужно поменять логику внутри getAvailableOperations для того, что бы это работало с логином
     if (!currentUser) {
       return []
     }
 
-    return this.getAvailableOperationsByUserRole(user.role, currentUser.role)
+    if (Admin.is(currentUser) && Admin.is(user)) {
+      return this.getOperationsForAdminOverAdmin(currentUser, user)
+    }
+
+    if (Admin.is(currentUser) && Moderator.is(user)) {
+      return this.getOperationsForAdminOverModerator(currentUser, user)
+    }
+
+    if (Admin.is(currentUser) && Client.is(user)) {
+      return this.getOperationsForAdminOverClient(currentUser, user)
+    }
+
+    if (Moderator.is(currentUser) && Admin.is(user)) {
+      return this.getOperationsForModeratorOverAdmin(currentUser, user)
+    }
+
+    if (Moderator.is(currentUser) && Moderator.is(user)) {
+      return this.getOperationsForModeratorOverModerator(currentUser, user)
+    }
+
+    if (Moderator.is(currentUser) && Client.is(user)) {
+      return this.getOperationsForModeratorOverClient(currentUser, user)
+    }
+
+    return []
   }
 
-  getAvailableOperationsByUserRole<R extends Role, CR extends Role>(userRole: R, currentUserRole: CR): AVAILABLE_USER_OPERATIONS_TYPE[CR][R] {
-    return AVAILABLE_USER_OPERATIONS[currentUserRole][userRole]
+  private getOperationsForAdminOverAdmin<CU extends Admin, U extends Admin> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
+  }
+
+  private getOperationsForAdminOverModerator<CU extends Admin, U extends Moderator> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
+  }
+
+  private getOperationsForAdminOverClient<CU extends Admin, U extends Client> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
+  }
+
+  private getOperationsForModeratorOverAdmin<CU extends Moderator, U extends Admin> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
+  }
+
+  private getOperationsForModeratorOverModerator<CU extends Moderator, U extends Moderator> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
+  }
+
+  private getOperationsForModeratorOverClient<CU extends Moderator, U extends Client> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+    return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
   }
 
   getConstructorByRole(role: Role) {

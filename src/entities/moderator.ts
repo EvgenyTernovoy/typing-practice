@@ -10,6 +10,10 @@ export class Moderator extends AccountInfo {
     throw new TypeError("User is not moderator!");
   }
 
+  static is(user: User): user is Moderator {
+    return user instanceof Moderator
+  }
+
   static from(obj: object): Moderator {
     if (AccountInfo.is(obj)) {
       return new Moderator(obj.id, obj.name, obj.email, obj.password);

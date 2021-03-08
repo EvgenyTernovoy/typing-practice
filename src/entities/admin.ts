@@ -10,6 +10,10 @@ export class Admin extends AccountInfo {
     throw new TypeError("User is not admin!");
   }
 
+  static is(user: User): user is Admin {
+    return user instanceof Admin
+  }
+
   static from(obj: object): Admin {
     if (AccountInfo.is(obj)) {
       return new Admin(

@@ -11,6 +11,11 @@ export class Client extends AccountInfo {
     throw new TypeError("User is not client!");
   }
 
+  static is(user: User): user is Client {
+    return user instanceof Client
+  }
+
+
   static from(obj: object): Client {
     if (AccountInfo.is(obj)) {
       return new Client(
