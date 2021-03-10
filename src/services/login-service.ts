@@ -1,14 +1,15 @@
 import UserService from "./user-service";
 import { User } from "../entities/user";
 import { Credentials } from "../hooks/use-login";
+import {ValidatedEmail, ValidatedPassword} from "../entities/validated-credentials";
 
 export default class LoginService {
   constructor(private readonly userService: UserService) {}
 
   // Try to define better types
-  public async login(email: Credentials['email'], password: Credentials['password']): Promise<User> {
-    if (!this.isValidEmail(email)) {
-      throw new Error("Email is invalid");
+  public async login(email: ValidatedEmail | null, password: ValidatedPassword | null): Promise<User> {
+    if (!email || !password) {
+      throw new TypeError("Credentials is invalid");
     }
 
     const registeredUsers = await this.getRegisteredUsers()
@@ -24,10 +25,22 @@ export default class LoginService {
     return User.from(user)
   }
 
-  isValidEmail(email: Credentials['email']): email is Credentials['email'] {
+  validateEmail(email: Credentials['email']): ValidatedEmail | null {
     const regexp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
 
-    return regexp.test(email)
+    if(!regexp.test(email)) {
+      return null
+    }
+
+    return email as ValidatedEmail
+  }
+
+  validatePassword(password: Credentials['password']): ValidatedPassword | null {
+    if(!password) {
+      return null
+    }
+
+    return password as ValidatedPassword
   }
 
   private getRegisteredUsers(): Promise<any> {

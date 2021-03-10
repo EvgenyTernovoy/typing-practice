@@ -79,7 +79,7 @@ export default class UserService {
     return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
   }
 
-  private getOperationsForAdminOverClient<CU extends Admin, U extends Client> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
+  private getOperationsForAdminOverClient<R1 extends Role, CU extends Admin, U extends Client> (currentUser: CU, user: U): AVAILABLE_USER_OPERATIONS_TYPE[CU['role']][U['role']] {
     return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role]
   }
 
