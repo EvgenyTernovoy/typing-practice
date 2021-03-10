@@ -19,3 +19,5 @@ export const AVAILABLE_USER_OPERATIONS = {
     [Role.CLIENT]: [ Operation.UPDATE_TO_MODERATOR],
   }
 } as const
+
+export type AVAILABLE_USER_OPERATIONS_TYPE = typeof AVAILABLE_USER_OPERATIONS

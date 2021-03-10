@@ -3,11 +3,11 @@ import { LogedInUser } from "../providers/loged-in-user";
 import {navigate} from "@reach/router";
 import {User} from "../entities/user";
 
-export default function useCurrentUser(): User | null {
+export default function useCurrentUser(): User {
   const { state: { user } = { user: null } } = useContext(LogedInUser);
-  if (user === null) { //так можно делать? Писать редирект в хуке?
+  if (user === null) {
     navigate("/login");
   }
-  return user;
+  return user as User;
 }
 
