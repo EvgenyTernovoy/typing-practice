@@ -36,10 +36,8 @@ export default class UserService {
   }
 
   getAvailableOperations<
-    R1 extends Role,
-    U1 extends User & { role: R1 },
-    R2 extends Role,
-    U2 extends PrivilegedUser & { role: R2 },
+    U1 extends User,
+    U2 extends PrivilegedUser ,
     >(user: U1, currentUser: U2) {
     return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role] as AVAILABLE_USER_OPERATIONS_TYPE[U2["role"]][U1["role"]];
   }
