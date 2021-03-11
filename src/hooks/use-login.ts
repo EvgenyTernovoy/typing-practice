@@ -23,8 +23,8 @@ export default function useLogin(credentials: Credentials | null): User | null {
 
     try {
       loginService.login(
-        new ValidEmail(credentials.email),
-        new ValidPassword(credentials.password)
+        ValidEmail.from(credentials.email),
+        ValidPassword.from(credentials.password)
       )
         .then((user: User) => {
           dispatch!({type: LogedInActionType.LOG_IN, payload: user})
