@@ -10063,6 +10063,11 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
+runtypes@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/runtypes/-/runtypes-5.0.1.tgz#406d140410266f6ece17c3501a37234f91faa346"
+  integrity sha512-+TWVlCmFsgrG4Nd2u+ambpNFO8Yp4heAflGQi9oNj6GRkxZo8aSDBxO1Y0vlKIQCWKKFxato+8Hn67XeAqKhRA==
+
 safe-buffer@5.1.2, safe-buffer@~5.1.0, safe-buffer@~5.1.1:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -11215,6 +11220,11 @@ type@^2.0.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/type/-/type-2.3.0.tgz#ada7c045f07ead08abf9e2edd29be1a0c0661132"
   integrity sha512-rgPIqOdfK/4J9FhiVrZ3cveAjRRo5rsQBAIhnylX874y1DX/kEKSVdLsnuHB6l1KTjHyU01VjiMBHgU2adejyg==
+
+typed-contracts@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/typed-contracts/-/typed-contracts-3.0.0.tgz#a1e5f8b06b35c4fdee3635e1097b93febaf07a16"
+  integrity sha512-Crw4cKiPBulqy2YFfCMU3OaudtDPeEDwbkbYj6mI2XZA2wt3iGBvxvMobESW9t73+hlIpwe/4i63M+BzkprW+g==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
