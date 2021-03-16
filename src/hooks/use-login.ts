@@ -4,7 +4,8 @@ import {useContext, useEffect} from "react";
 import {LogedInActionType, LogedInUser} from "../providers/loged-in-user";
 import type {User} from "../entities/user";
 import {Role} from "../entities/role";
-import { ValidCredentials } from "../entities/valid-credentials";
+import { ValidEmail } from "../entities/valid-email";
+import { ValidPassword } from "../entities/valid-password";
 
 export type Credentials = {
   email: string;
@@ -21,11 +22,9 @@ export default function useLogin(credentials: Credentials | null): User | null {
     }
 
     try {
-      const validCredentials = ValidCredentials.check(credentials)
-
       loginService.login(
-        validCredentials.email,
-        validCredentials.password,
+        ValidEmail.check(credentials.email),
+        ValidPassword.check(credentials.password)
       )
         .then((user: User) => {
           dispatch!({type: LogedInActionType.LOG_IN, payload: user})

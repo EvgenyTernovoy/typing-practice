@@ -1,4 +1,8 @@
-import type { Admin } from "./admin";
-import type { Moderator } from "./moderator";
+import * as t from 'runtypes'
 
-export type PrivilegedUser = Admin | Moderator;
+import { Admin } from "./admin";
+import { Moderator } from "./moderator";
+
+export const PrivilegedUser = t.Union(Admin, Moderator)
+
+export type PrivilegedUser = t.Static<typeof PrivilegedUser>

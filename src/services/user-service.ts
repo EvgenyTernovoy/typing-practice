@@ -6,7 +6,8 @@ import {Moderator} from "../entities/moderator";
 import {castTo, RoleToUser} from "../entities/role-to-user";
 import {PrivilegedUser} from "../entities/privileged-user";
 import {AVAILABLE_USER_OPERATIONS, AVAILABLE_USER_OPERATIONS_TYPE} from "../entities/available-user-operations";
-import {ValidCredentials} from "../entities/valid-credentials";
+import {ValidEmail} from "../entities/valid-email";
+import {ValidPassword} from "../entities/valid-password";
 
 export default class UserService {
   private users: readonly User[] = [];
@@ -26,7 +27,7 @@ export default class UserService {
     return import("../mocks/users.json");
   }
 
-  async getCurrentUser(email: ValidCredentials['email'], password: ValidCredentials['password']): Promise<User> {
+  async getCurrentUser(email: ValidEmail, password: ValidPassword): Promise<User> {
     const registeredUsers = await this.fetch()
 
     const user = registeredUsers.default.find((u: User) => u.email === email && u.password === password)
@@ -34,8 +35,6 @@ export default class UserService {
     if (!user) {
       throw new Error("User is not found");
     }
-
-    const User = this.getConstructorByRole(user.role)
 
     return User.check(user)
   }
