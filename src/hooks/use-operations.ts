@@ -1,8 +1,7 @@
 import Services from "../services";
 import {useContext} from "react";
 import type {User} from "../entities/user";
-import {Admin} from "../entities/admin";
-import {Moderator} from "../entities/moderator";
+import {PrivilegedUser} from "../entities/privileged-user";
 
 export default function useOperations(user: User, currentUser: User) {
   const {userService} = useContext(Services);
@@ -10,5 +9,5 @@ export default function useOperations(user: User, currentUser: User) {
     return []
   }
 
-  return userService.getAvailableOperations(user, Admin.Or(Moderator).check(currentUser));
+  return userService.getAvailableOperations(user, PrivilegedUser.check(currentUser));
 }

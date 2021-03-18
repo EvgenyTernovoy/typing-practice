@@ -1,8 +1,5 @@
 import {Role} from "../entities/role";
-import {Admin} from "../entities/admin";
 import {User} from "../entities/user";
-import {Client} from "../entities/client";
-import {Moderator} from "../entities/moderator";
 import {castTo, RoleToUser} from "../entities/role-to-user";
 import {PrivilegedUser} from "../entities/privileged-user";
 import {AVAILABLE_USER_OPERATIONS, AVAILABLE_USER_OPERATIONS_TYPE} from "../entities/available-user-operations";
@@ -52,16 +49,5 @@ export default class UserService {
     U2 extends PrivilegedUser,
     >(user: U1, currentUser: U2) {
     return AVAILABLE_USER_OPERATIONS[currentUser.role][user.role] as AVAILABLE_USER_OPERATIONS_TYPE[U2["role"]][U1["role"]];
-  }
-
-  getConstructorByRole(role: Role) {
-    switch (role) {
-      case Role.ADMIN:
-        return Admin;
-      case Role.CLIENT:
-        return Client;
-      case Role.MODERATOR:
-        return Moderator;
-    }
   }
 }
